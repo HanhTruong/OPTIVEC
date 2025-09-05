@@ -1,0 +1,935 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>CMATH</title></head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#0000ff" alink="#ff0000">
+<TABLE CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+<TR><TD><IMG SRC="optivec.gif" BORDER=0 WIDTH=280>&nbsp;
+</TD><TD><h1><i><b><font size="+4">CMATH</font></b></i><P>
+Version 3</h1>
+<BR><h2>for C/C++ and for Pascal/Delphi</h2>
+</td></tr><tr><TD>
+<i>OptiCode</i>
+<BR>Dr. Martin Sander Software Development
+<BR>Steinachstr. 9A
+<BR>D-69198 Schriesheim
+<BR>Germany
+<BR><a href="http://www.optivec.com">http://www.optivec.com</a>
+<BR>e-mail: <A HREF="mailto:support@optivec.com">support@optivec.com</A> or
+<BR><A HREF="mailto:sales@optivec.com">sales@optivec.com</A>
+</TD><TD>&nbsp;
+</TD></TR></TABLE>
+<P><I>CMATH</I> is available both separately and as a part of <I>OptiVec</I>. If you ordered or downloaded <I>CMATH</I> alone, please disregard all references to <I>OptiVec</I> in this documentation.
+<BR>If you got <I>CMATH</I> as a part of <I>OptiVec</I>, you may wish to refer to <a href="HANDBOOK.HTM">HANDBOOK.HTM</a> for a description of the basic principles of the <i>OptiVec</i> libraries and an overview over <i>VectorLib</i>, the first part of <I>OptiVec</I>. The second part, <I>MatrixLib</I> is described in <a href="MATRIX.HTM">MATRIX.HTM</a>.
+
+<BR><a href="#chap1_2">Chapter 1.2</a> of this file contains the licence terms for the Shareware version, <a href="#chap1_3_2">Chapter 1.3</a> for the Registered version.
+<BR>&nbsp;
+<BR><I>OptiCode</I>&#153; and <i>OptiVec</i>&#153; are trademarks of Dr. Martin Sander Software Dev. Other brand and product names mentioned in this handbook for identification purposes are trademarks or registered trademarks of their respective holders.
+<BR>&nbsp;
+<table width="100%"><tr><td width="10%"></TD>
+<td><b>German-speaking users:</b>
+<BR>Um die Kosten f&uuml;r das Herunterladen der Shareware-Version &uuml;ber das Internet f&uuml;r alle so gering wie m&ouml;glich zu halten, enth&auml;lt diese nur die englische Dokumentation. Sie finden die deutsche Beschreibung separat unter <a href="http://www.optivec.com/download/CMDOCD.ZIP">http://www.optivec.com/download/CMDOCD.ZIP</a>.</td></tr>
+</table>
+
+<a name="TOC"></a>
+<H1>Contents</H1>
+<a href="#chap1">1. Introduction</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_1">1.1 What is CMATH ?</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_1_1">1.1.1 C/C++ Specifics</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_1_2">1.1.2 Pascal/Delphi Specifics</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_2">1.2 Licence Terms for the Shareware Version</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_3">1.3 Registered Versions</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_3_1">1.3.1 Registered Versions: Ordering</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_3_2">1.3.2 License Terms for the Registered Versions</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap1_4">1.4 Getting Started</a>
+<BR><a href="#chap2">2. Overview over the Functions of CMATH</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap2_1">2.1 Initialization of Complex Numbers</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap2_2">2.2 Data-Type Interconversions</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap2_3">2.3 Basic Complex Operations</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap2_4">2.4 Arithmetic Operations</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap2_5">2.5 Mathematical Functions</a>
+<BR><a href="#chap3">3. Error Handling</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap3_1">3.1 General Error Handling of Complex Functions</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap3_1_1">3.1.1 C/C++ Specifics</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap3_1_2">3.1.2 Pascal/Delphi Specifics</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap3_2">3.2 Advanced Error Handling: Writing Messages into a File</a>
+<BR><a href="#chap4">4. Syntax Reference</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap4_1">4.1 Plain-C, Pascal/Delphi Functions</a>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#chap4_2">4.2 Overloaded C++ Functions</a>
+
+<P><a name="chap1"></a>
+<H1><HR width="100%">1. Introduction</H1>
+<P><a name="chap1_1"></a>
+<H2>1.1 What is CMATH ?</H2>
+<i>CMATH</i> is a comprehensive library for complex-number arithmetics and mathematics, both in cartesian and in polar coordinates. All functions may alternatively be called from classic C and Pascal/Delphi with type-specific function names (like <I><a href="#cfsin">cf_sin</a></I>,&nbsp;&nbsp; <I><a href="#cfexp">cd_exp</a></I>,&nbsp;&nbsp; <I><a href="#pfsqrt">pe_sqrt</a></I>), or from C++ with overloaded function names and operators (like <I><a href="#sin">sin</a></I>,&nbsp;&nbsp; <I><a href="#exp">exp</a></I>,&nbsp;&nbsp; <I><a href="#sqrt">sqrt</a>,&nbsp; operator +</I>). As far as possible, all functions have the same names in the Pascal/Delphi version as in the plain-C version.
+<P>Superior speed, accuracy and safety are achieved through the implementation in Assembly language (as opposed to the compiled or inline code of available complex C++ class libraries). Only for the most simple tasks, alternative inline C++ functions are used in the C++ version.
+<P>The implementation was guided by the following rules:
+<OL>
+<LI>Without any compromise, top priority is always given to the mathematically correct result, with the accuracy demanded for the respective data type. Especially for complex functions, this necessitates a very thorough treatment of many different situations. To this end, the various cases have to be distinguished with pedantic care.
+<LI>Mathematical functions must be &quot;safe&quot; under all circumstances. They may for no reason simply crash, but have to perform a decent error treatment. This is true even - and perhaps especially - for seemingly nonsense arguments, with the single exception of the non-numbers INF and NAN, which occur themselves only as a result of serious errors in other functions.
+<LI>By all possible means, greatest execution speed must be attained. (After all, you did not buy your fast computer for nothing!)
+<LI>The program code has to be as compact as possible. However, in case of conflicts, faster execution speed is always given priority over smaller code size.
+</OL>
+Having a look into other available complex class libraries, you will immediately discover the differences between our approach and theirs. Often the mathematical functions are implemented by simply writing down the textbook formula. This yields relatively compact source code. But, due to round-off error of intermediate results, the final results returned by these
+functions are sometimes very inaccurate or even completely wrong. Moreover, they may lead to unhandled floating-point errors (this means: program crash!). Unnecessary to mention that the code thus generated is rather slow.
+
+<P>This documentation describes the <i>CMATH</i> implementations for
+<UL>
+<LI>Borland C++ (Version 3.0 or higher, including all versions of Borland C++ Builder) for DOS, Windows 3.x or 32-bit Windows. The library for the memory model FLAT for Windows95/98/2000/NT requires Borland C++, version 4.0 or higher.
+<LI>Microsoft Visual C++ (Version 5.0 or higher) for Windows95/98/2000/NT on PC platforms.
+<LI>Borland Delphi 2, 4, 5, or 6 on 32-bit Windows
+<LI>Borland (Turbo) Pascal 7.0 for DOS
+</UL>
+<BR>Please note that only the &quot;outside appearance&quot; and thus the documentation is the same for these different
+compilers. The libraries themselves are compiler-specific; each library can be used only with one compiler and, in the case of C/C++, with one memory model or one target:
+<OL>
+<LI><U>Shareware version for Borland C++:</U>
+<BR>Depending on your choice when ordering or downloading, you have got either of the following three library versions:
+<UL><LI>Memory model FLAT for Windows95/98/NT, statically linked runtime library
+<LI>LARGE for DOS, or
+<LI>LARGE for Windows 3.x.
+</UL>
+All of them require, at least, a 386 computer equipped with a 387 coprocessor. This means: no emulation, no 486SX, but preferably 486DX, Pentium or higher.
+<P><LI><U>Registered version for Borland C++:</U>
+<BR>The full (registered) version for Borland C++ contains libraries for all memory models of DOS, 16-bit Windows and 32-bit Windows. These libraries, in turn, are shipped in four versions: one for P6 (Pentium III or higher) computers, the second for 486DX and Pentium, the third for 386 with 387, and &#150; still available &#150; the fourth for 286 with or without coprocessor, i.e. with emulation. The P6 version can only be used with BC++ 5.x, BCB 5 or higher, but not with BCB 1-4, because the linker shipped with the latter BCB versions does not correctly link P6 code.
+
+<P><LI><U>Microsoft Visual C++:</U>
+<BR>The Shareware version has 486DX/Pentium libraries for &quot;single-thread debug&quot; and &quot;multi-thread debug&quot;. The full (registered) version for Microsoft Visual C++ contains additional libraries for &quot;multi-thread DLL debug&quot; and the three corresponding release libraries. There is no actual debug information enclosed in the <I>OptiVec</I> &quot;debug&quot; libraries, but they have to be used with the debug libraries of Visual C++. In addition, libraries optimized for Pentium III or higher are included in the full version.
+
+<P><LI><U>Borland Delphi 2, 4, 5, or 6:</U>
+The Shareware version requires, at least, a 386 computer equipped with a 387 coprocessor. This means:
+no emulation, no 486SX, but preferrably 486DX, Pentium or higher. The Registered version has separately optimized libraries for 486/Pentium, and for 386+387.
+
+<P><LI><U>Borland Pascal 7.0:</U>
+The Shareware version is for the real-mode DOS target and requires, at least, a 386 computer equipped with a 387 coprocessor. The registered version of <I>OptiVec</I> for Borland Pascal has separate units for 486/Pentium, 386+387, and 286, both for real-mode and protected-mode DOS.
+</OL>
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+<P><a name="chap1_1_1"></a>
+<H3>1.1.1 C/C++ Specifics</H3>
+The complex C++ <B>class</B>es and the C <B>struct</B>s <B>fComplex</B> etc. are binary compatible with each other. This point may become important for large projects with mixed C and C++ modules. Existing C++ code which uses the complex class library of Borland C++, contained in &lt;complex.h&gt;, can be left unchanged, because the <i>CMATH</i> functions and data types are also binary compatible with those of &lt;complex.h&gt;. The single exception is the member function <I>polar</I>, which had to be replaced by <I>magargtoc</I>, as the word &quot;polar&quot; now denotes the complex classes in polar coordinates.
+<P>Here is a detailed description of how to switch from the complex classes of Borland C++ to the new implementation given by CMATH:
+<OL><LI>In C++ modules, replace the statement
+<BR><font face="courier new"> #include &lt;complex.h&gt;</font>
+<BR>by the statement
+<BR><font face="courier new"> #include &lt;newcplx.h&gt;</font>
+<BR>Then, the following six complex classes are defined:
+<BR><B>class complex</B>&lt;<B>float</B>&gt;, <B> class complex</B>&lt;<B>double</B>&gt;, <B>class complex</B>&lt;<B>long double</B>&gt;, <B>class polar</B>&lt;<B>float</B>&gt;, <B>class polar</B>&lt;<B>double</B>&gt;, and <B>class polar</B>&lt;<B>long double</B>&gt;.
+
+<P> The data types <B>fComplex</B>, <B>dComplex</B>, <B>eComplex</B>, <B>fPolar</B>, <B>dPolar</B>, and <B>ePolar</B> are defined as synonyms for these classes.
+<BR>In order to avoid the letter &quot;L&quot; (which is already over-used by <B>long</B> and <B>unsigned long</B>, <B>extended</B> is used as a synonym for <B>long double</B> in the Borland C++ version of CMATH. In the MSVC version, it is a synonym for <B>double</B>, as MSVC does not support 80-bit IEEE reals. Consequently, the complex data types of <B>extended</B> precision are named <B>eComplex</B> and <B>ePolar</B>. Thereby, the way is held open for a future inclusion of whole-number complex types into CMATH. Then, <B>liComplex</B> and <B>ulComplex</B> shall denote the complex types consisting of <B>long int</B> and <B>unsigned long</B> parts, respectively.<BR>&nbsp;
+<LI>If you prefer to have the &quot;classic&quot; <B>class complex</B> of older releases of Borland C++, you have to declare
+<BR><font face="courier new"> #define CMATH_CLASSIC_COMPLEX</font>
+<BR>before (!) including &lt;newcplx.h&gt;.
+<BR>In this case, only the <B>class complex</B> will be defined and gets the synonym <B>dComplex</B>. Here you will have no access to the complex-number functions of <B>float</B> and of <B>extended</B> precision, and all functions in polar coordinates are unavailable as well.<BR>&nbsp;
+<LI>For plain-C modules, you cannot include &lt;newcplx.h&gt;. Rather, please declare
+<BR><font face="courier new"> #include &lt;cmath.h&gt;</font>
+<BR>If you are using only one level of floating-point precision, you may wish to include only one of the type-specific include-files: &lt;cfmath.h&gt;, &lt;cdmath.h&gt;, or &lt;cemath.h&gt;, respectively.
+<BR>The plain-C implementation of <i>CMATH</i> is based upon the following definitions of the complex data types:
+<BR><font face="courier new"> typedef struct { float Re, Im; } fComplex;
+<BR>typedef struct { double Re, Im; } dComplex;
+<BR>typedef struct { extended Re, Im; } eComplex;
+<BR>typedef struct { float Mag, Arg; } fPolar;
+<BR>typedef struct { double Mag, Arg; } dPolar;
+<BR>typedef struct { extended Mag, Arg; } ePolar;</font>
+<BR>As described above, the data type <B>extended</B> is used as a synonym for <B>long double</B> (Borland C++ version) or <B>double</B> (MSVC version).<BR>&nbsp;
+<LI>Replace calls to the complex member function <I>polar</I> by calls to <I><a href="#magargtoc">magargtoc</a></I>.<BR>&nbsp;
+<LI>The constituent parts of the C++ classes are declared as public (in contrast to Borland C++ !). They are named &quot;Re&quot; and &quot;Im&quot; in the cartesian classes, and &quot;Mag&quot; and &quot;Arg&quot; in the polar classes.
+This allows to access them as <font face="courier new">z.Re, z.Im, p.Mag</font>, or <font face="courier new">p.Arg</font> in C++ modules as well as in plain-C modules.<BR>&nbsp;
+<LI>For time-critical applications, we recommend to use the C rather than the C++ version of CMATH, as C/C++ compilers handle <B>struct</B>s much more efficiently than <B>class</B>es. To use the C version with your C++ modules, please note the following points:
+<UL><LI>include &lt;cmath.h&gt; instead of &lt;newcplx.h&gt;
+<LI>for initialization, assign the real/imaginary or Mag/Arg parts directly (e.g., <font face="courier new">z.Re = 3; z.Im = 5;</font> ) or use the functions <I><a href="#fcplx">fcplx</a>, dcplx, ecplx, <a href="#fpolr">fpolr</a>, dpolr, epolr</I>. The constructors <I>complex(), fComplex(), polar(), fPolar()</I>, etc. are not available.
+<LI>if you do a C++ compile on modules with &lt;cmath.h&gt; included, you have the choice between calling <i>CMATH</i> functions by their type-specific names (like <I><a href="#cfsin">cf_sin</a></I>,&nbsp;&nbsp; <I><a href="#cfexp">cd_exp</a></I>), or by their overloaded C++ names (e.g., <I><a href="#sin">sin</a></I>,&nbsp;&nbsp; <I><a href="#exp">exp</a></I>). On some occasions, you might be forced to use the type-specific names in order to resolve ambiguities.
+</UL>
+</OL>
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+<P><a name="chap1_1_2"></a>
+<H3>1.1.2 Pascal/Delphi Specifics</H3>
+The CMATH-Pascal data types are binary compatible with those of the C/C++ versions. The function names are also the same as in the plain-C version. The syntax, however, is somewhat different, as C supports complex numbers (defined as <B>struct</B>s) as return values, whereas Pascal does not allow <B>record</B>s to be returned by a function. Instead, they are passed as <B>var</B> arguments to the complex functions.
+<P><i>CMATH</i> for Pascal/Delphi defines six complex data types:<font face="courier new">
+<BR><B>type</B> fComplex = <B>record</B> Re, Im: Single; <B>end</B>;
+<BR><B>type</B> dComplex = <B>record</B> Re, Im: Double; <B>end</B>;
+<BR><B>type</B> eComplex = <B>record</B> Re, Im: Extended; <B>end</B>;
+<BR><B>type</B> fPolar = <B>record</B> Mag, Arg: Float; <B>end</B>;
+<BR><B>type</B> dPolar = <B>record</B> Mag, Arg: Double; <B>end</B>;
+<BR><B>type</B> ePolar = <B>record</B> Mag, Arg: Extended; <B>end</B>;</font>
+<P>The reason why the single-precision type gets the name <B>fComplex</B> instead
+of <B>sComplex</B> is that the letter &quot;s&quot; is already over-used by <B>ShortInt</B> and <B>SmallInt</B> in Pascal. Therefore, this name is derived from the C/C++ analogue of <B>Single</B>, which is <B>float</B>.
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><a name="chap1_2"></a>
+<H2>1.2 Licence Terms for the Shareware Version</H2>
+In case you got <I>CMATH</I> as a part of <I>OptiVec</I>, the <I>CMATH</I> licence is included in the <a href="HANDBOOK.HTM#chap1_2"><I>OptiVec</I> licence</a>. Otherwise, the following licence terms apply to the Shareware version of <i>CMATH</i>.
+For the licence terms of the Registered version, please see paragraph <a href="#chap1_3_2">1.3</a>.
+<B><P>This is the Shareware version of <i>CMATH</i> (&quot;SOFTWARE&quot;).
+<BR>It may be used under the following licence terms:
+<OL>
+<LI>You may test the SOFTWARE free of charge for a period of up to 90 days on one computer. 
+<LI>Applications, created with the Shareware version of this SOFTWARE, will run only on the same computer on which this SOFTWARE has been installed. They cannot and may not be distributed to others. After the end of the trial period, they will cease functioning.
+<LI>If you want to continue using this SOFTWARE after testing, and/or if you wish to distribute programs containing functions of this SOFTWARE, you have to purchase the registered version (see <a href="#chap1_3">chapter 1.3</a>).
+<LI>This SOFTWARE is provided on an &quot;as is&quot; basis. Any explicit or implicit warranties for the SOFTWARE are excluded.
+<LI>Despite thorough testing of the SOFTWARE, errors and bugs cannot be excluded with certainty. No claims as to merchantability or fitness for a particular purpose are made.
+<LI>You may not use the SOFTWARE in any environment or situation where personal injury or excessive damage to anyone's property (including your own) could arise from malfunctioning of the SOFTWARE.
+<LI>You may not decompile, disassemble, or otherwise reverse engineer the SOFTWARE into a machine-readable form. You may, however, inspect the functions it contains by means of debuggers like those included in the Borland and Microsoft compilers.
+</OL></B>
+Copyright for the SOFTWARE and its documentation &copy; 1996-2002 <I>OptiCode</I> - Dr. Martin Sander Software Dev.
+<BR>All rights reserved, including those of translation into foreign languages.
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><a name="chap1_3"></a>
+<H2>1.3 Registered Versions</H2>
+<P><a name="chap1_3_1"></a>
+<H2>1.3.1 Registered Versions: Ordering</H2>
+In order to make this product affordable also for those who will not themselves make money using it, we offer an <U>educational edition</U> at a strongly reduced rate, in addition to the full <U>commercial edition</U>. The contents of these two editions is identical. The only difference lies in the restrictions of use: The <U>educational edition</U> may not be used for commercial / business / government purposes, but is restricted to private and educational use. 
+<P>Purchasing the full (registered) version gives you the right to use it on as many computers at a time as the number of units you bought.
+<P>The right to distribute applications employing functions of <i>CMATH</i> is included in the <U>commercial-version</U> licence. <B>No run-time licence are needed for your customers! </B> Corporate site and world-wide licences are available upon request.
+
+<P>The full versions (both the commercial and the educational editions) of <i>CMATH</i>
+<UL><LI>support all memory models of Windows95/98, NT, 3.x, and DOS (Borland C++)<BR>
+<LI>single-thread, multi-thread, multi-thread DLL debug and release (Microsoft Visual C++)<BR>
+<LI>Delphi 2, 4, 5, and 6 (Borland Delphi)<BR>
+<LI>the real-mode DOS and DPMI targets (Borland Pascal 7.0)<BR>
+<LI>Borland C++ and Pascal only: 
+<BR>have individually optimized libraries for each degree of processor backward-compatibility:
+<BR>P6 (requiring Pentium III; C++ only)
+<BR>486DX/Pentium+ (optimized for Pentium II)
+<BR>386+ (387 coprocessor required)
+<BR>286+ (no coprocessor required; C/C++ only).<BR>
+<LI>(C/C++ versions only:) come with printed documentation (which, however, is updated much less frequently than the electronic documentation).<BR>
+<LI>entitle you to two years of free updates (by downloading from our web site)<BR>
+<LI>can be ordered the following ways:
+<BR><a href="#International">a) International orders</a> (credit-card or US cheque) by Internet, mail, FAX, or phone
+<BR><a href="#EU">b) Orders within the European Union</a> (pre-paid or upon invoice)
+</UL>
+<a name="International"></a>
+<h3>a) International Orders: Pricing</h3>
+<H4><I>CMATH</I> for Borland C/C++,&nbsp;&nbsp;Microsoft Visual C++,&nbsp;&nbsp;or Borland Delphi<BR>
+ (CD-ROM, manual in English)</H4> $&nbsp;&nbsp;&nbsp;39 for 1 unit of the educational edition
+<BR>$&nbsp;&nbsp;&nbsp;60 for 1 unit of the commercial edition
+<BR>$ 200 for &nbsp;&nbsp;5 units (only through SWREG)
+<BR>$ 350 for 10 units (only through SWREG)
+<BR>Add $ 5 for S&amp;H (postal) and applicable VAT.
+
+<H4><I>CMATH</I> for Borland (Turbo) Pascal</H4> $ 25 for 1 unit + $ 5 for S&amp;H
+
+<h3>International: Ordering Options</h3>
+For your protection, we handle credit-card orders through two specialized secure services:
+<P><U><B>SWREG:</B></U>
+<BR>When ordering online through SWREG, please use the product-specific links below:
+<BR><A HREF="http://www.swreg.org/soft_shop/47/shopscr2.html" TARGET="_blank"> <I>CMATH</I> for C/C++</A>
+<BR><A HREF="http://www.swreg.org/soft_shop/47/shopscr5.html" TARGET="_blank"> <I>CMATH</I> for Pascal/Delphi</A>
+<BR>Please choose the exact version and delivery options in the simple pulldown menu on the respective page.
+<P><U><B>ShareIt:</B></U>
+When ordering online through ShareIt, please use the product-specific links below:
+<BR><A HREF="http://www.shareit.com/programs/101353.htm" TARGET="_blank"><I>CMATH</I> for Borland C/C++</A>&nbsp;
+<BR><A HREF="http://www.shareit.com/programs/103422.htm" TARGET="_blank"><I>CMATH</I> for Microsoft Visual C++</A>&nbsp;
+<BR><A HREF="http://www.shareit.com/programs/103844.htm" TARGET="_blank"><I>CMATH</I> for Borland Delphi</A>&nbsp;
+<BR><A HREF="http://www.shareit.com/programs/103424.htm" TARGET="_blank"><I>CMATH</I> for Borland (Turbo) Pascal</A>&nbsp;
+
+<P>You may also order by e-mail to register@shareit.com.
+<BR>US customers can also call 1-800-903-4152 (only for orders, please).
+<BR>US check and cash orders can be sent with this <A HREF="ORDFORM2.HTM">order form</A> to ShareIt!'s US office at
+<BR>ShareIt! Inc.
+<BR>P.O. Box 97841
+<BR>Pittsburgh, PA 15227-0241
+<BR>USA
+<P>Note the program No.:&nbsp;
+<TABLE>
+<TR><TD></TD><TD>commercial&nbsp;&nbsp;</TD><TD>educational</TD></TR>
+<TR><TD><I>CMATH</I> for Borland C/C++</TD><TD>101353</TD><TD>102655</TD></TR>
+<TR><TD><I>CMATH</I> for Microsoft Visual C++</TD><TD>103422</TD><TD>103441</TD></TR>
+<TR><TD><I>CMATH</I> for Borland (Turbo) Pascal</TD><TD>103424</TD></TR>
+<TR><TD><I>CMATH</I> for Borland Delphi</TD><TD>103844</TD><TD>103860</TD></TR>
+</TABLE>
+
+<a name="'EU"></a>
+<h3>b) Orders in the European Union</h3>
+If you can pay in Euro and order directly from the author, the pricing is
+<H4><I>CMATH</I> for Borland C/C++,&nbsp;&nbsp;Microsoft Visual C++,&nbsp;&nbsp;or Borland Delphi<BR>
+ (CD-ROM, manual in English)</H4> EUR&nbsp;&nbsp;&nbsp;39 for 1 unit of the educational edition
+<BR>EUR&nbsp;&nbsp;&nbsp;59 for 1 unit of the commercial edition
+<BR>EUR 199 for &nbsp;&nbsp;5 units
+<BR>EUR 349 for 10 units
+<BR>(incl. 16% German VAT, plus EUR 5,- handling charge).
+
+<H4><I>CMATH</I> for Borland (Turbo) Pascal</H4> EUR 19 for 1 unit + EUR 5 for S&amp;H (incl. 16% German VAT)
+
+<P><b>If you have a European VAT ID, or if you order from outside the European Union, you are exempt from German VAT, and it will be deduced from your bill, but you may have to pay your local VAT and/or import duties according to local laws.</b><BR>
+
+<P>Please send a print-out of this <A HREF="ORDFORM1.HTM">order form</A> to
+<P><I>OptiCode</I> - Dr. Martin Sander Software Dev.
+<BR>Steinachstr. 9A
+<BR>D-69198 Schriesheim
+<BR>Germany
+<P>FAX +49 - 6203 - 92 53 96
+
+<P>For any other questions related to ordering <I>CMATH</I>, please contact us at: <A HREF="mailto:sales@optivec.com">sales@optivec.com</A>
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><a name="chap1_3_2"></a>
+<h3>1.3.2 License Terms for the Registered version</h3>
+In case you got <I>CMATH</I> as a part of <I>OptiVec</I>, the <I>CMATH</I> licence is included in the <a href="HANDBOOK.HTM#chap1_3_2"><I>OptiVec</I> licence</a>. Otherwise, these are the license terms valid for you, if you got this file with the registered version of <I>CMATH</I>, :
+<b><P>This is a single copy license for <i>CMATH</i> (&quot;SOFTWARE&quot;), granted by <I>OptiCode</I> - Dr. Martin Sander Software Development (&quot;<I>OptiCode</I>&quot;).
+<P>The SOFTWARE in this package is licensed to you as the user. It is not sold. The term &quot;user&quot; means a programmer who links binary code of this SOFTWARE into his own applications. Those people using, in turn, his applications without the need of installing this SOFTWARE themselves, do not need any runtime license for the SOFTWARE. The right to distribute applications containing code of this SOFTWARE is included in the license fee for the <U>commercial version</U>.
+<P>Once you have paid the required license fee, you may use the SOFTWARE for as long as you like, provided you do not violate the copyright and if you observe the following rules:
+<OL>
+<LI>You may use the SOFTWARE on any computer for which it is designed, as long as not more than one person uses it at any time.<BR>
+<LI>You may make backup copies of the SOFTWARE for your personal use. You may only transfer the SOFTWARE to somebody else if you transfer the original and all copies, retaining no copies for yourself. You may not lease or rent the SOFTWARE to others.<BR>
+<LI>You may not decompile, disassemble, or otherwise reverse engineer the SOFTWARE into a machine-readable form. You may, however, inspect the functions contained in this SOFTWARE by means of debuggers like those included in the Borland and Microsoft compilers.<BR>
+<LI>If you payed the reduced licence fee for the &quot;educational version&quot; rather than the full rate for the &quot;commercial version&quot;, the use of this SOFTWARE is restricted to private and educational purposes. In this case, you may not use the SOFTWARE for commercial purposes or for government purposes other than education. 
+<BR>Applications using functions of this SOFTWARE may be freely distributed (i.e. without any run-time licence) only if created with the &quot;commercial edition&quot;, and on condition that the functions of this SOFTWARE are permanently linked into a program etc., but do not appear as a library to the user of that application.<BR>
+<LI>You may not use the SOFTWARE in any environment or situation where personal injury or excessive damage to anyone's property (including your own) could arise from malfunctioning of the SOFTWARE.<BR>
+<LI><I>OptiCode</I>'s liability is limited by the enclosed Limited Warranty. In no case shall <I>OptiCode</I>'s liability exceed the license paid for the right to use the SOFTWARE.
+</OL>
+<BR><B><U>Limited Warranty for the Registered version</U></B>
+<OL><LI><I>OptiCode</I> warrants that the magnetic or optic media on which the SOFTWARE is recorded are free from defects in materials and workmanship under normal use. The SOFTWARE itself will perform substantially in accordance with the specifications set forth in the documentation.<BR>
+<LI>The above express warranties are made for a period of six months from the date the SOFTWARE is delivered to you as the first user.<BR>
+<LI>Any magnetic/optic or printed media from this package proving defective in materials or workmanship will be replaced on an exchange basis.<BR>
+<LI>Great care has been taken to ensure that the SOFTWARE operates in accordance with the specifications as described in the documentation. However, it is not guaranteed that this SOFTWARE will operate completely free of errors or that the documentation is free of errors.<BR>
+<LI>Any implied warranties including any warranties of merchantability or of fitness for a particular purpose are limited to the terms of the above express warranties.<BR>
+<LI><I>OptiCode</I> shall not in any case be liable for special, incidental, consequential, indirect or other damages arising from any breach of these warranties or of the license conditions, even if he has been notified of the possibility of such damages.
+</OL></b>
+<BR>Copyright for the SOFTWARE and its documentation &copy; 1996-2002 <I>OptiCode</I> - Dr. Martin Sander Software Development. All rights reserved.
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><a name="chap1_4"></a>
+<H2>1.4 Getting Started</H2>
+<P><B>If you got <I>CMATH</I> as a part of <I>OptiVec</I>, you should read <a href="HANDBOOK.HTM#chap1_4"> chapter 1.4 of HANDBOOK.HTM</a> instead of the remainder of the present paragraph. If you have already read that, continue with <a href="#chap2">chapter 2</a>, or go <A HREF="#TOC">back to the Table of Contents</A>.</B>
+
+<P>To install <i>CMATH</i>, please follow these steps:
+<OL>
+<LI>In order to use <i>CMATH</i>, you need an already installed copy of your C/C++, Delphi, or Pascal compiler. Install <i>CMATH</i> by executing INSTALL.EXE from the root directory of the installation disk or CD-ROM. Normally, <i>CMATH</i> will be installed into a directory named &quot;CMATH&quot;. This directory holds the documentation.
+<LI>Include the <I>CMATH</I> lib and include (C/C++) or units (Pascal/Delphi) subdirectories into the search path.
+<LI><U>a) C/C++:</U>
+<BR>Assuming your <i>CMATH</i> directory is C:\CMATH, add
+<BR>C:\CMATH\LIB to the library search path and
+<BR>C:\CMATH\INCLUDE to the include-file search path of the IDE (and of the configuration file TURBOC.CFG and BCC32.CFG in case you are using Borland's command-line compilers).<BR>&nbsp;
+<BR><U>b) Pascal/Delphi, Shareware version:</U>
+<BR>Pascal: The CMATH unit will be installed into the directory CMATH\UNITS.<BR>Delphi: The units (.DCU files) will be installed into the directory CMATH\LIB.<BR>&nbsp;
+<BR><U>c) Pascal/Delphi, Registered version:</U>
+<BR>Pascal: The unit for 386+387 will be installed into the directory CMATH\UNITS.
+<BR>The additional units for 486/Pentium are contained in the file UNITS4.ZIP and are not automatically installed. If you wish to use them, manually create the subdirectory CMATH\UNITS4 and unzip the file mentioned into it.
+<BR>Delphi: The installation routine you have to execute is named after the target Delphi version: INSTALL2.EXE, INSTALL4.EXE, INSTALL5.EXE, and INSTALL6.EXE. The units (.DCU files) for 386+387 will be installed into CMATH\LIB3, those for 486/Pentium into CMATH\LIB4.
+<LI>Choose the desired platform, target, and configuration:
+<OL><LI><U>Borland C++:</U>
+<BR>Choose the desired platform (DOS, Windows3.x, or Win32) and memory model. Select the required library from the following table (add the suffix .LIB) and add it to your project. The Shareware versions contain only libraries for either DOS-LARGE, Windows-LARGE, or Win32.<BR>&nbsp;
+<table border width="90%">
+<tr valign="top"><td>Platform</td><td>Memory Model</td><td>Required Processor</td></tr>
+<tr><td>&nbsp;</TD><td>&nbsp;</TD><td><table width="100%"><tr><td width="25%">286</td><td width="21%">386+387</td><td width="29%">486DX/Pentium</td><td>Pentium III</td></tr></table></td></tr>
+<tr valign="top"><td>DOS</td><td>TINY</td><td><table width="100%"><tr><td width="25%">CMATHS2</td><td width="25%">CMATHS3</td><td width="25%">CMATHS4</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>DOS</td><td>SMALL</td><td><table width="100%"><tr><td width="25%">CMATHS2</td><td width="25%">CMATHS3</td><td width="25%">CMATHS4</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>DOS</td><td>MEDIUM</td><td><table width="100%"><tr><td width="25%">CMATHM2</td><td width="25%">CMATHM3</td><td width="25%">CMATHM4</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>DOS</td><td>COMPACT</td><td><table width="100%"><tr><td width="25%">CMATHC2</td><td width="25%">CMATHC3</td><td width="25%">CMATHC4</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>DOS</td><td>LARGE</td><td><table width="100%"><tr><td width="25%">CMATHL2</td><td width="25%">CMATHL3</td><td width="25%">CMATHL4</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>DOS</td><td>HUGE</td><td><table width="100%"><tr><td width="25%">CMATHH2</td><td width="25%">CMATHH3</td><td width="25%">CMATHH4</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>Windows</td><td>SMALL</td><td><table width="100%"><tr><td width="25%">CMATHS2W</td><td width="25%">CMATHS3W</td><td width="25%">CMATHS4W</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>Windows</td><td>MEDIUM</td><td><table width="100%"><tr><td width="25%">CMATHM2W</td><td width="25%">CMATHM3W</td><td width="25%">CMATHM4W</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>Windows</td><td>COMPACT</td><td><table width="100%"><tr><td width="25%">CMATHC2W</td><td width="25%">CMATHC3W</td><td width="25%">CMATHC4W</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>Windows</td><td>LARGE</td><td><table width="100%"><tr><td width="25%">CMATHL2W</td><td width="25%">CMATHL3W</td><td width="25%">CMATHL4W</td><td>&#150;&#150;&#150;</td></tr></table></td></tr>
+<tr valign="top"><td>32-bit Windows<BR>static run-time library<BR>dynamic run-time library</td><td>(FLAT)<BR> GUI or Console</td><td><table width="100%"><tr><td width="25%">&#150;&#150;&#150;</TD><td width="25%">&nbsp;<BR>CMATHF3W<BR>CMF3WD</td><td width="25%">&nbsp;<BR>CMATHF4W<BR>CMF4WD</td><td>&nbsp;<BR>CMATHF6W<BR>CMF6WD</td></tr></table></td></tr>
+</table>
+
+<BR><LI><U>Visual C++:</U> Choose the target and configuration and add the corresponding <i>CMATH</i> library to your project, according to the following table. Note that the Shareware version contains only libraries for single-thread debug and multi-thread debug.<BR>&nbsp;
+<table border width="90%">
+<tr valign="top"><td>Target</td><td>Configuration</td><td>486/Pentium library </td><td>Pentium III library</td></tr>
+<tr valign="top"><td>single-thread</td><td>debug</td><td>CMVCSD.LIB</td><td>CMVCSD6.LIB</td></tr>
+<tr valign="top"><td>single-thread</td><td>release</td><td>CMVCSR.LIB</td><td>CMVCSR6.LIB</td></tr>
+<tr valign="top"><td>multi-thread</td><td>debug</td><td>CMVCMTD.LIB</td><td>CMVCMTD6.LIB</td></tr>
+<tr valign="top"><td>multi-thread</td><td>release</td><td>CMVCMTR.LIB</td><td>CMVCMTR6.LIB</td></tr>
+<tr valign="top"><td>multi-thread DLL</td><td>debug</td><td>CMVCMDD.LIB</td><td>CMVCMDD6.LIB</td></tr>
+<tr valign="top"><td>multi-thread DLL</td><td>release</td><td>CMVCMDR.LIB</td><td>CMVCMDR6.LIB</td></tr>
+</table>&nbsp;<BR>
+In order to allow <I>CMATH</I> to be used in applications both with and without MFC, it calls the Windows API only directly, not <I>via</I> MFC.  However, if you use MFC (either as a static library or as a DLL), Visual C++ does not automatically link the import library, <font face="courier new">user32.lib</font>. You have to explicitly do this yourself: The line, <font face="Courier new">Project / Settings / Linker / Object and Library Modules</font> must contain <font face="courier new">user32.lib</font>. Otherwise you would get the linker error "error LNK2001: Unresolved external symbol __imp__MessageBoxA@??".<BR>&nbsp;
+
+<LI><U>Borland Pascal:</U><BR>Choose the target DOS real mode or (for the registered version only) DOS protected-mode.<BR>&nbsp;
+<LI><U>Borland Delphi:</U><BR>
+No choices are to be made at this level.
+</OL>
+<LI>Declare the use of <I>CMATH</I> functions in your program,:
+<UL><LI><U>C/C++:</U><BR>
+#include &lt;newcplx.h&gt; (C++) or &lt;cmath.h&gt; (C or C++), as described <a href="#chap1_1_1">above</a>.
+<BR>If you are writing MFC or Borland C++ ObjectWindows applications, the <i>CMATH</i> header files should be included after the MFC or OWL header files.
+<LI><U>Pascal/Delphi:</U><BR>
+Declare the use of <I>CMATH</I> units as usual with the &quot;<B>uses</B> CMATH&quot; statement.
+</UL>
+<LI><U>Borland C/C++ 16-bit programs only:</U>
+<BR><i>CMATH</i> works with Borland (Turbo) C++, version 3.0 or higher. Since, from version 4.0 on, Borland changed the name of the error handling routine <I>matherr</I> (without underbar) into <I>_matherr</I> (with a leading underbar), any 16-bit program using <i>CMATH</i> has to call a macro, NEWMATHERR, which takes care of redirecting calls to <I>_matherr</I>, if necessary. You should place the call to NEWMATHERR into the module containing <I>main()</I> or <I>OwlMain()</I>:
+<BR><font face="courier new"> #include .....
+<BR>#include &lt;cmath.h&gt; /* or &lt;newcplx.h&gt; */
+<BR>NEWMATHERR
+<BR>int main( void )
+<BR>{ .......... }</font>
+<BR>If you forget to call NEWMATHERR, you will get a linker error &quot;Unresolved external <I>_matherr</I>&quot; in the Borland C versions from 4.0 on. Inclusion of the macro NEWMATHERR is not needed for 32-bit programs.
+<LI>Have a look into the sample program, CDEMO.CPP or CDEMO.PAS.
+</OL>
+After these preparations, all <i>CMATH</i> functions are available for your programs.
+<BR>Should you wish to remove <i>CMATH</i> from your computer, please run UNINSTAL.EXE, or simply delete the directory <font face="courier new">CMATH</font> with its subdirectories.
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><A NAME="chap2"></A>
+<P><HR WIDTH="100%"><H1>2. Overview over the Functions of CMATH</H1>
+In the following, it is often only the <B>fComplex</B> or <B>fPolar</B> version of a function that is explicitly mentioned. The versions for <B>dComplex</B> / <B>dPolar</B>, and <B>eComplex</B> / <B>ePolar</B> are always exactly analogous.
+<BR>All functions for the languages C and Pascal/Delphi have a prefix denoting the data type on which the function works:
+<BR>&quot;<I>cf_</I>&quot; or &quot;<I>pf_</I>&quot; stands for single precision (arguments and return values of the data types <B>fComplex</B>, <B>fPolar</B>, sometimes together with <B>float</B>),
+<BR>&quot;<I>cd_</I>&quot; or &quot;<I>pd_</I>&quot; stands for double precision (arguments and return values of the data types <B>dComplex</B>, <B>dPolar</B>, sometimes together with <B>double</B>), whereas
+<BR>&quot;<I>ce_</I>&quot; and &quot;<I>pe_</I>&quot; denote extended-precision functions.
+<P>In C++, synonyms are defined for all these functions. The synonyms do not have a prefix, since the data type information is implicitly handled by the C++ compiler. The C++ function names are always identical to those found in the complex class libraries (if the respective function exists there), with the single exception of the member function <I>polar</I>, which had to be replaced by <I><a href="#magargtoc">magargtoc</a></I>, as the name &quot;polar&quot; had to be reserved for the polar classes. Of course, if you wish to use the C function names in your C++ modules, you can do so by including &lt;cmath.h&gt; instead of &lt;newcplx.h&gt;.
+
+<P><a name="chap2_1"></a>
+<H2><HR WIDTH="100%">2.1. Initialization of Complex Numbers</H2><P>
+In the following, we denote the complex classes by by their short names, <B>fComplex</B>, <B>fPolar</B>, etc. In C++, you can always use the template nomenclature instead, writing &quot;<B>complex</B>&lt;<B>float</B>&gt;&quot; wherever &quot;<B>fComplex</B>&quot; is written here, and so on for all other complex types and classes.
+<P>Complex numbers are initialized by separately assigning a value to the imaginary and real parts or to the Mag and Arg parts, e.g.:
+<BR><font face="courier new"> z.Re &nbsp;= 3.0; z.Im &nbsp;= 5.7;
+<BR>p.Mag = 8.8; p.Arg = 3.14;</font>
+<BR>(Of course, for Pascal/Delphi, the assignment operator is written &quot:=&quot).
+<BR>Alternatively, the same initialization can be accomplished by the functions <I><a href="#fcplx">fcplx</a></I> or <I><a href="#fpolr">fpolr</a></I>:
+<BR><U>C/C++:</U><font face="courier new">
+<BR>z = fcplx( 3.0, 5.7 );
+<BR>p = fpolr( 4.0, 0.7 );</font>
+<P><U>Pascal/Delphi:</U><font face="courier new">
+<BR>fcplx( z, 3.0, 5.7 );
+<BR>fpolr( p, 3.0, 5.7 );</font>
+
+<P>For double-precision complex numbers, use <I>dcplx</I> and <I>dpolr</I>, for extended-precision complex numbers, use <I>ecplx</I> and <I>epolr</I>.
+
+<P><a name="chap2_2"></a>
+<H2><HR WIDTH="100%">2.2. Data-Type Interconversions</H2><P>
+<P>Interconversions between the various complex types are performed via the functions:
+<table border width="100%">
+<tr valign="top"><td width="40%"><a href="#cftocd">cftocd</a>,&nbsp;&nbsp; <a href="#cdtocf">cdtocf</a>,&nbsp;&nbsp; <a href="#cftoce">cftoce</a>,&nbsp;&nbsp; <a href="#cetocf">cetocf</a>,&nbsp;&nbsp; <a href="#cdtoce">cdtoce</a>,&nbsp;&nbsp; <a href="#cetocd">cetocd</a></td><td>up- or down-conversion of accuracy within the cartesian-complex types</td></tr>
+<tr valign="top"><td><a href="#pftopd">pftopd</a>,&nbsp;&nbsp; <a href="#pdtopf">pdtopf</a>,&nbsp;&nbsp; <a href="#pftope">pftope</a>,&nbsp;&nbsp; <a href="#petopf">petopf</a>,&nbsp;&nbsp; <a href="#pdtope">pdtope</a>,&nbsp;&nbsp; <a href="#petopd">petopd</a></td><td>up- or down-conversion of accuracy within the polar-complex types</td></tr>
+<tr valign="top"><td><a href="#cftopf">cftopf</a>,&nbsp;&nbsp; <a href="#cftopd">cftopd</a>,&nbsp;&nbsp; <a href="#cftope">cftope</a>,<BR>
+<a href="#cftopf">cdtopf</a>,&nbsp;&nbsp; <a href="#cdtopd">cdtopd</a>,&nbsp;&nbsp; <a href="#cdtope">cdtope</a>,<BR>
+<a href="#cetopf">cetopf</a>,&nbsp;&nbsp; <a href="#cetopd">cetopd</a>,&nbsp;&nbsp; <a href="#cetope">cetope</a></td><td>conversion from cartesian into polar complex</td></tr>
+<tr valign="top"><td><a href="#pftocf">pftocf</a>,&nbsp;&nbsp; <a href="#pftocd">pftocd</a>,&nbsp;&nbsp; <a href="#pftoce">pftoce</a>,<BR>
+<a href="#pdtocf">pdtocf</a>,&nbsp;&nbsp; <a href="#pdtocd">pdtocd</a>,&nbsp;&nbsp; <a href="#pftocf">pdtoce</a>,<BR>
+<a href="#petocf">petocf</a>,&nbsp;&nbsp; <a href="#petocd">petocd</a>,&nbsp;&nbsp; <a href="#petoce">petoce</a></td><td>conversion from polar into cartesian complex</td></tr>
+</table>&nbsp;
+<BR>OVERFLOW errors in the course of down-conversions are silently cured: program execution is continued with the largest value possible.
+
+<table width="100%"><tr valign="top"><td width="10%"><U>C++ only:</U></td><td>
+For C++ modules, there are several overloaded constructors as an alternative to the above functions:
+<BR>basic forms:<font face="courier new">
+<BR>&nbsp;&nbsp; fComplex <a href="#fComplex">fComplex</a>( float RePart, float ImPart=0 );
+<BR>&nbsp;&nbsp; fComplex fComplex( dComplex );
+<BR>&nbsp;&nbsp; fComplex fComplex( eComplex );
+<BR>&nbsp;&nbsp; fPolar fPolar( float MagPart, float ArgPart=0 );
+<BR>&nbsp;&nbsp; fPolar fPolar( dPolar );
+<BR>&nbsp;&nbsp; fPolar fPolar( ePolar );</font>
+<BR>interconversion cartesian &lt;--&gt; polar:<font face="courier new">
+<BR>&nbsp;&nbsp; fComplex fComplex( fPolar );
+<BR>&nbsp;&nbsp; fComplex fComplex( dPolar );
+<BR>&nbsp;&nbsp; fComplex fComplex( ePolar );
+<BR>&nbsp;&nbsp; fPolar fPolar( fComplex );
+<BR>&nbsp;&nbsp; fPolar fPolar( dComplex );
+<BR>&nbsp;&nbsp; fPolar fPolar( eComplex );</font>
+<P> Similarly to the constructors <I>fComplex()</I> and <I>fPolar()</I>, also <I>dComplex()</I>, <I>dPolar()</I>, <I>eComplex</I>, and <I>ePolar()</I> exist in overloaded versions performing the same tasks for the classes <B>dComplex</B>, <B>dPolar</B>, <B>eComplex</B>, and <B>ePolar</B>, respectively. As described above for the C/Pascal/Delphi versions, OVERFLOW errors in the course of down-conversions are silently cured, without calling <I>_matherr</I>.
+</td></tr></table>&nbsp;
+
+<BR>A special constructor for polar numbers is
+<BR><font face="courier new"> fPolar <a href="#pfprincipal">pf_principal</a>( fPolar __p );</font>
+<BR>and, for C++ only, its overloaded form for two separate real input numbers 
+<BR><font face="courier new"> fPolar <a href="#principal">principal</a>( float Mag, float Arg );</font>
+<BR>These functions reduce the input <I>Arg</I> to the range -<font face="symbol">p</font> &lt; Arg &lt;= +<font face="symbol">p</font>. You might recall that each complex number has an infinite number of representations in polar coordinates, with the angles differing by an integer multiple of 2 <font face="symbol">p</font>. The representation with -<font face="symbol">p</font> &lt; Arg &lt;= +<font face="symbol">p</font> is called the principal value.
+<BR>Please note that these are the only polar functions reducing the output to the principal value. All others accept and return arguments whose angles may fall outside this range.
+
+<P>The conversion between cartesian and polar format involves transcedental functions and is, therefore, quite time-consuming. It is true that multiplications are faster in polar coordinates, whereas additions are much faster in Cartesian. The difference, however, is so much smaller than the cost of switching back and forth between the different representations, that we recommend you stay in general with the cartesian format. Only in the following cases, the conversion really makes sense:
+<OL><LI>You have only multiplications and related math functions (like <I><a href="#square">square</a></I>,&nbsp; <I><a href="#sqrt">sqrt</a>,&nbsp; <a href="#ipow">ipow</a></I>). Then, you should start out with polar coordinates.
+<LI>You have to call the complex exponential function. In this case, <I><a href="#cfexptop">cf_exptop</a></I> brings you into polar coordinates in a very natural manner.
+<LI>You are in polar coordinates and have to calculate the logarithm. In this case, <I><a href="#pflogtoc">pf_logtoc</a></I> (or similarly <I><a href="#pflog2toc">pf_log2toc</a></I>, &nbsp;&nbsp;<I><a href="#pflog10toc">pf_log10toc</a></I>) brings you &quot;down&quot; to the cartesian representation.
+</OL>
+<BR><P ALIGN="RIGHT"><A HREF="#TOC">Zurück zum Inhaltsverzeichnis</A></P>
+
+<P><a name="chap2_3"></a>
+<H2>2.3 Basic Complex Operations</H2>
+The following basic complex operations are defined in <I>CMATH</I>:&nbsp;
+
+<TABLE BORDER WIDTH="100%" >
+<TR><TD WIDTH="25%"><B>cartesian C/Pascal/Delphi function</B></TD><TD><B>polar C/Pascal/Delphi function</B></TD>
+<TD WIDTH="25%"><B>overloaded C++ function</B></TD><TD><B>explanation</B></TD></TR>
+<TR><TD><a href="#cfconj">cf_conj</a></TD><TD><a href="#pfconj">pf_conj</a></TD>
+<TD><a href="#conj">conj</a></TD><TD>complex-conjugate form</TD></TR>
+<TR><TD><a href="#cfneg">cf_neg</a></TD><TD><a href="#pfneg">pf_neg</a></TD>
+<TD><a href="#neg">neg</a> (or -)</TD><TD>negation</TD></TR>
+<TR><TD><a href="#cfreal">cf_real</a></TD><TD><a href="#pfreal">pf_real</a></TD>
+<TD><a href="#real">real</a></TD><TD>extraction of the real part</TD></TR>
+<TR><TD><a href="#cfimag">cf_imag</a></TD><TD><a href="#pfimag">pf_imag</a></TD>
+<TD><a href="#imag">imag</a></TD><TD>extraction of the imaginary part</TD></TR>
+<TR valign="top"><TD><a href="#cfmagargtoc">cf_magargtoc</a></TD><TD>N.A.</TD>
+<TD><a href="#magargtoc">magargtoc</a></TD><TD>conversion of polar coordinates, entered as separate real numbers, into cartesian format</TD></TR>
+<TR valign="top"><TD>N.A.</TD><TD><a href="#pfreimtop">pf_reimtop</a></TD>
+<TD><a href="#reimtop">reimtop</a></TD><TD>conversion of complex coordinates, entered as separate real numbers, into polar format</TD></TR>
+<TR valign="top"><TD><a href="#cfabs">cf_abs</a></TD><TD><a href="#pfabs">pf_abs</a></TD>
+<TD><a href="#abs">abs</a></TD><TD>absolute value (magnitude of the pointer in the complex plane; this
+is treated as a math function with error handling)</TD></TR>
+<TR valign="top"><TD><a href="#cfarg">cf_arg</a></TD><TD><a href="#pfarg">pf_arg</a></TD>
+<TD><a href="#arg">arg</a></TD><TD>argument (angle of the pointer in the complex plane)&nbsp;</TD></TR>
+<TR valign="top"><TD><a href="#cfnorm">cf_norm</a></TD><TD><a href="#pfnorm">pf_norm</a></TD>
+<TD><a href="#norm">norm</a></TD><TD>norm (defined here as the square of the absolute value)&nbsp;</TD></TR>
+<TR valign="top"><TD>N.A.</TD><TD><a href="#pfprincipal">pf_principal</a></TD>
+<TD><a href="#principal">principal</a></TD><TD>principal value, with -<font face="symbol">p</font> &lt; Arg &lt;= +<font face="symbol">p</font></TD></TR>
+</table>&nbsp; 
+<BR>(The double and extended-precision versions are exactly analogous to the <I>cf_</I> / <I>pf_</I> version)
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+<P><a name="chap2_4"></a>
+<H2>2.4 Arithmetic Operations</H2>
+<table width="100%"><tr valign="top"><td width="10%"><U>Only C++:</U></td><td> The following set of operators is available for all of the three <U>cartesian complex</U> classes:
+<BR><font face="courier new"> &nbsp;&nbsp;&nbsp; +&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;+=&nbsp;&nbsp;&nbsp;-=&nbsp;&nbsp;&nbsp;*=&nbsp;&nbsp;&nbsp;/=&nbsp;&nbsp;&nbsp;==&nbsp;&nbsp;&nbsp;!=</font>
+<BR>For the <U>polar complex</U> classes, we have:
+<BR><font face="courier new"> &nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;*=&nbsp;&nbsp;&nbsp; /= &nbsp;&nbsp;&nbsp;== &nbsp;&nbsp;&nbsp;!=</font>
+<BR>These operators exist also for &quot;mixed&quot; arguments, where one argument is complex, the other real and where the arguments are of different floating-point accuracies.</td></tr></table>
+
+<P>Since it is only the language C++, but neither plain-C nor Pascal, which allows overloaded arithmetic operators, all arithmetic operations of complex numbers are implemented additionally as functions which may be called from C/Pascal/Delphi as well as C++ modules:<BR>&nbsp;
+
+<TABLE BORDER COLS=3 WIDTH="100%" >
+<TR valign="top"><TD WIDTH="20%">Cartesian</TD><TD WIDTH="20%">Polar</TD>
+<TD>&nbsp;</TD></TR>
+<TR valign="top"><TD><a href="#add">cf_add</a></TD><TD>N.A.</TD>
+<TD>addition of two complex numbers</TD></TR>
+<TR valign="top"><TD><a href="#cfaddRe">cf_addRe</a></TD><TD>N.A.</TD>
+<TD>addition of a complex number and a real number</TD></TR>
+<TR valign="top"><TD><a href="#cfsub">cf_sub</a></TD><TD>N.A.</TD>
+<TD>subtraction of two complex numbers (first operand minus the second operand)</TD></TR>
+<TR valign="top"><TD><a href="#cfsubRe">cf_subRe</a></TD><TD>N.A.</TD>
+<TD>subtraction of a real number from a complex number</TD></TR>
+<TR valign="top"><TD><a href="#cfsubrRe">cf_subrRe</a></TD><TD>N.A.</TD>
+<TD>subtraction of a complex number from a real number</TD></TR>
+<TR valign="top"><TD><a href="#cfmul">cf_mul</a></TD><TD><a href="#mul">pf_mul</a></TD>
+<TD>multiplication of two complex numbers</TD></TR>
+<TR valign="top"><TD><a href="#cfmulRe">cf_mulRe</a></TD><TD><a href="#mulRe">pf_mulRe</a></TD>
+<TD>multiplication of a complex number and a real number</TD></TR>
+<TR valign="top"><TD><a href="#cfdiv">cf_div</a></TD><TD><a href="#pfdiv">pf_div</a></TD>
+<TD>division of two complex numbers (first operand divided by the second operand)</TD></TR>
+<TR valign="top"><TD><a href="#cfdivRe">cf_divRe</a></TD><TD><a href="#pfdivRe">pf_divRe</a></TD>
+<TD>division of a complex number by a real number</TD></TR>
+<TR valign="top"><TD><a href="#cfdivrRe">cf_divrRe</a></TD><TD><a href="#pfdivrRe">pf_divrRe</a></TD>
+<TD>division of a real number by a complex number</TD></TR>
+</TABLE><BR>
+(similarly the double- and extended-precision versions)&nbsp;
+
+<P>The assignment operator &quot;=&quot; or &quot;:=&quot; is the only operator defined also in plain-C and Pascal/Delphi for complex numbers.
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+<P><a name="chap2_5"></a>
+<H2>2.5 Mathematical Functions</H2>
+<I>CMATH</I> contains all mathematical functions you would find in the complex class libraries of C++, along with several additional ones:<BR>&nbsp;
+<TABLE BORDER WIDTH="100%" >
+<TR valign="top"><TD WIDTH="16%"><B>cartesian C/Pascal/Delphi function</B></TD><TD width="16%"><B>polar C/Pascal/Delphi function</B></TD><TD WIDTH="19%"><B>overloaded C++ function</B></TD>
+<TD WIDTH="20%"><B>formula</B></TD><TD><B>explanation</B></TD></TR>
+<TR><TD><a href="#cfabs">cf_abs</a></TD><TD><a href="#pfabs">pf_abs</a></TD><TD><a href="#abs">abs</a></TD>
+<TD>ry = | zx |</TD><TD>absolute value</TD></TR>
+<TR><TD><a href="#cfacos">cf_acos</a></TD><TD>N.A.</TD><TD><a href="#acos">acos</a></TD>
+<TD>zy = acos( zx )</TD><TD>arcus cosine function</TD></TR>
+<TR><TD><a href="#cfasin">cf_asin</a></TD><TD>N.A.</TD><TD><a href="#asin">asin</a></TD>
+<TD>zy = asin( zx )</TD><TD>arcus sine function</TD></TR>
+<TR><TD><a href="#cfatan">cf_atan</a></TD><TD>N.A.</TD><TD><a href="#atan">atan</a></TD>
+<TD>zy = atan( zx )</TD><TD>arcus tangent function</TD></TR>
+<TR><TD><a href="#cfcos">cf_cos</a></TD><TD>N.A.</TD><TD><a href="#cos">cos</a></TD>
+<TD>zy = cos( zx )</TD><TD>cosine</TD></TR>
+<TR><TD><a href="#cfcosh">cf_cosh</a></TD><TD>N.A.</TD><TD><a href="#cosh">cosh</a></TD>
+<TD>zy = cosh( zx )</TD><TD>hyperbolic cosine</TD></TR>
+<TR><TD><a href="#cfcubic">cf_cubic</a></TD><TD><a href="#pfcubic">pf_cubic</a></TD><TD><a href="#cubic">cubic</a></TD>
+<TD>zy = zx<SUP>3</SUP></TD><TD>third power</TD></TR>
+<TR><TD><a href="#cfexp">cf_exp</a></TD><TD><a href="#cfexptop">cf_exptop</a></TD><TD><a href="#exp">exp</a></TD>
+<TD>zy = exp( zx )</TD><TD>exponential function</TD></TR>
+<TR><TD><a href="#cfinv">cf_inv</a></TD><TD><a href="#pfinv">pf_inv</a></TD><TD><a href="#inv">inv</a></TD>
+<TD>zy = 1.0 / zx</TD><TD>inverse</TD></TR>
+<TR><TD><a href="#cfipow">cf_ipow</a></TD><TD><a href="#pfipow">pf_ipow</a></TD><TD><a href="#ipow">ipow</a></TD>
+<TD>zy = zx<SUP>n</SUP></TD><TD>integer power</TD></TR>
+<TR><TD><a href="#cfln">cf_ln</a></TD><TD><a href="#pflntoc">pf_lntoc</a></TD><TD><a href="#ln">ln</a></TD>
+<TD>zy = ln( zx )</TD><TD>natural logarithm</TD></TR>
+<TR><TD><a href="#cflog">cf_log</a></TD><TD><a href="#pflogtoc">pf_logtoc</a></TD><TD><a href="#log">log</a></TD>
+<TD>zy = ln( zx )</TD><TD>identical to <a href="#ln">cf_ln</a>,&nbsp;&nbsp; <a href="#pflntoc">pf_lntoc</a>,&nbsp;&nbsp; <a href="ln">ln</a></TD></TR>
+<TR><TD><a href="#cflog2">cf_log2</a></TD><TD><a href="#pflogtoc2">pf_log2toc</a></TD><TD><a href="#log2">log2</a></TD>
+<TD>zy = lb( zx )</TD><TD>binary logarithm</TD></TR>
+<TR><TD><a href="#cflog10">cf_log10</a></TD><TD><a href="#pflog10toc">pf_log10toc</a></TD><TD><a href="#log10">log10</a></TD>
+<TD>zy = lg( zx )</TD><TD>decadic logarithm</TD></TR>
+<TR><TD><a href="#cfpow">cf_pow</a></TD><TD>N.A.</TD><TD><a href="#pow">pow</a></TD>
+<TD>zy = zx<SUP>zexp</SUP></TD><TD>arbitrary power</TD></TR>
+<TR valign="top"><TD><a href="#cfpowReBase">cf_powReBase</a></TD><TD>N.A.</TD><TD><a href="#powReBase">pow, powReBase</a></TD>
+<TD>zy = r<SUP>zx</SUP></TD><TD>real base to complex power</TD></TR>
+<TR valign="top"><TD><a href="#cfpowReExpo">cf_powReExpo</a></TD><TD><a href="#pfpowReExpo">pf_powReExpo</a></TD><TD><a href="#pow">pow, powReExpo</a></TD>
+<TD>zy = zx<SUP>r</SUP></TD><TD>real power of complex base</TD></TR>
+<TR><TD><a href="#cfquartic">cf_quartic</a></TD><TD><a href="#pfquartic">pf_quartic</a></TD><TD><a href="#quartic">quartic</a></TD>
+<TD>zy = zx<SUP>4</SUP></TD><TD>fourth power</TD></TR>
+<TR><TD><a href="#cfsin">cf_sin</a></TD><TD>N.A.</TD><TD><a href="#sin">sin</a></TD>
+<TD>zy = sin( zx )</TD><TD>sine</TD></TR>
+<TR><TD><a href="#cfsinh">cf_sinh</a></TD><TD>N.A.</TD><TD><a href="#sinh">sinh</a></TD>
+<TD>zy = sinh( zx )</TD><TD>hyperbolic sine</TD></TR>
+<TR><TD><a href="#cfsquare">cf_square</a></TD><TD><a href="#pfsquare">pf_square</a></TD><TD><a href="#square">square</a></TD>
+<TD>zy = zx<SUP>2</SUP></TD><TD>square</TD></TR>
+<TR><TD><a href="#cfsqrt">cf_sqrt</a></TD><TD><a href="#pfsqrt">pf_sqrt</a></TD><TD><a href="#sqrt">sqrt</a></TD>
+<TD>zy = sqrt( zx )</TD><TD>square root</TD></TR>
+<TR><TD><a href="#cftan">cf_tan</a></TD><TD>N.A.</TD><TD><a href="#tan">tan</a></TD>
+<TD>zy = tan( zx )</TD><TD>tangent</TD></TR>
+<TR><TD><a href="#cftanh">cf_tanh</a></TD><TD>N.A.</TD><TD><a href="#tanh">tanh</a></TD>
+<TD>zy = tanh( zx )</TD><TD>hyperbolic tangent</TD></TR>
+</TABLE>
+<P>As noted above, the exponential and logarithm functions provide a natural transition between cartesian and polar coordinates. While there are <a href="#exp">exp</a> and <a href="#log">log</a> functions for <B>fComplex</B> as argument and as return value, <I><a href="#cfexptop">cf_exptop</a></I> takes an <B>fComplex</B> argument and returns <B>fPolar</B>. In the opposite direction, <I><a href="#pflogtoc">pf_logtoc</a></I> takes an <B>fPolar</B> argument and returns <B>fComplex</B>.
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><A NAME="chap3"></A>
+<P><HR WIDTH="100%"><H1>3. Error Handling</H1>
+<P><a name="chap3_1"></a>
+<H2>3.1 General Error Handling of Complex Functions</H2>
+The error handling of complex functions follows the rules employed generally also for real-number functions and operations. For all <U>arithmetic</U> operations, the design of the algorithms eliminates the danger of failure due to irregular intermediate results. Overflowing or otherwise irregular final results, however, will lead to a hardware interrupt being generated and, as a consequence, to a program abort.
+<P>In contrast to the <U>arithmetic</U> operations, all <U>mathematical</U> functions and all data-type interconversions perform a tight error checking. All error messages eventually generated use the C/Pascal/Delphi name (rather than the overloaded C++ name) of the failing function.
+<P>If you got <I>CMATH</I> as a part of <I>OptiVec</I>, you should read <a href="HANDBOOK.HTM">chapter 5 of HANDBOOK.HTM</a> rather than the present chapter.
+
+<P><a name="chap3_1_1"></a>
+<H2>3.1.1 C/C++ Specifics</H2>
+All error conditions in <I>CMATH</I> math functions are handled via <I>_matherr</I> (for <B>fComplex, fPolar, dComplex</B>, and <B>dPolar</B> functions) and <I>_matherrl</I> (for <B>eComplex</B> and <B>ePolar</B> functions; Borland C++ only). The real or Mag part of the complex argument, causing an error is stored in e-&gt;x and the imaginary or Arg part in e-&gt;y.
+<H3>Borland C++ 16-bit programs only: </H3>
+As mentioned already in <a href="#chap2">chapter 2</a>, Borland has changed the name of the error-handling function <I>matherr</I> (without leading underbar), used in the versions 3.x, into <I>_matherr</I> (with a leading underbar), from version 4.0 on.
+<BR>In order to make <i>CMATH</i> compatible with both the older and the later versions of Borland C++, the following way of error handling was adopted:<BR>
+ In case of an error, all <i>CMATH</i> functions call primarily matherr (as in the older versions of Borland C++). A macro NEWMATHERR provides for the necessary redirection of these calls to <I>_matherr</I>, if a later version of Borland C++ is used. Therefore, NEWMATHERR must be called once (!) in any program using CMATH, after the inclusion of &lt;cmath.h&gt; or &lt;newcplx.h&gt;. The best place is the module containing the <I>main(), WinMain()</I>, or <I>OWLMain()</I> function, after the header:<font face="courier new">
+<BR>#include &lt;cmath.h&gt; /* or &lt;newcplx.h&gt; */
+<BR>#include ...
+<BR>NEWMATHERR
+<BR>......
+<BR>main()
+<BR>{ ... }</font>
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><a name="chap3_1_2"></a>
+<H2>3.1.2 Pascal/Delphi Specifics</H2>
+How <I>CMATH</I> handles floating-point errors in the complex math functions is defined by a call to <I>V_setFPErrorHandling</I>. A number of pre-defined constants <I>fperrXXX</I> is available for the construction of the desired error-handling mode:<br>&nbsp;
+<table border width="100%">
+<tr valign="top"><td>Constant</td><td>Value</td><td>Meaning</td></tr>
+<tr valign="top"><td>fperrIgnore</td><td>0</td><td>Ignore all floating-point errors: handle them silently, do not print a message, continue program execution</td></tr>
+<tr valign="top"><td>fperrNoteDOMAIN</td><td>$0001</td><td>Print a message in case of a DOMAIN error</td></tr>
+<tr valign="top"><td>fperrNoteSING</td><td>$0002</td><td>Print a message in case of a SING error</td></tr>
+<tr valign="top"><td>fperrNoteOVERFLOW</td><td>$0003</td><td>Print a message in case of an OVERFLOW error</td></tr>
+<tr valign="top"><td>fperrNoteTLOSS</td><td>$0004</td><td>Print a message in case of a TLOSS error</td></tr>
+<tr valign="top"><td>fperrAbortDOMAIN</td><td>$0101</td><td>Abort program in case of a DOMAIN error</td></tr>
+<tr valign="top"><td>fperrAbortSING</td><td>$0202</td><td>Abort program in case of a SING error</td></tr>
+<tr valign="top"><td>fperrAbortOVERFLOW</td><td>$0303</td><td>Abort program in case of an OVERFLOW error</td></tr>
+<tr valign="top"><td>fperrAbortTLOSS</td><td>$0404</td><td>Abort program in case of a TLOSS error</td></tr>
+<tr valign="top"><td>fperrDefaultHandling</td><td>$0107</td><td>Same as fperrAbortDOMAIN <B>or</B> fperrNoteSING <B>or</B> fperrNoteOVERFLOW</td></tr>
+</table>&nbsp;
+<BR>Example:<BR>
+<font face="courier new">V_setFPErrorHandling( fperrAbortDOMAIN + fperrAbortSING + fperrAbortOVERFLOW + fperrNoteTLOSS );</font><BR>
+In this example, program execution will be aborted (with the appropriate message) in the case of the most severe errors, DOMAIN and SING. In the case of OVERFLOW and TLOSS errors, a warning will be displayed, but program execution will be continued with default results set by the respective functions where the errors occur. The repeated occurrence
+of the same type of error within one and the same function will lead to only one message being generated. Subsequent errors will be treated silently.
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+
+<P><a name="chap3_2"></a>
+<H2>3.2 Advanced Error Handling: Writing Messages into a File</H2>
+Quite generally, the libraries shipped with compilers do not offer the programmer much control over the way error messages are printed. While this is fine in most instances, there may be situations in which you might, for example, wish the error messages not to be printed to the screen, but rather into a file, so that you could check later what has gone wrong. An additional motivation could come from the fact that, for any error occurring in a Windows program, a message box is displayed and program execution interrupted until you acknowledge having taken notice of the error.
+<P>You might wish to circumvent this. To this end, <i>OptiVec</i> and <I>CMATH</I> provide the function <I>V_setErrorEventFile</I>. This function needs as arguments the desired name of your event file and a switch named <I>ScreenAndFile</I> which decides if you wish to have error messages printed simultaneously into the file and onto the screen (ScreenAndFile = TRUE (non-zero)) or exclusively into the file (ScreenAndFile = FALSE (0)).
+<P>Example:<BR>
+<font face="courier new">V_setErrorEventFile( &quot;MyLogFil.TXT&quot;, 0 ); /* C/C++ */<BR>
+V_setErrorEventFile( 'MyLogFil.TXT', FALSE ); (* Pascal/Delphi *)</font>
+<BR>Here, you will get all subsequent error messages only into your log file, MyLogFil.TXT and no messages on the screen. The default, i.e., printing error messages to the screen, is restored by <I>V_closeErrorEventFile</I>. (That function does not take any arguments and does not return anything.)
+<P>Note that this redirection of error messages is valid only for errors occurring in <i>OptiVec</i> (<I>CMATH</I>) routines. If you wish to do so, however, there is a way in C/C++ to extend the redirection also to the &quot;non-<I>OptiVec</I>&quot; functions: you may modify <I>_matherr</I> and <I>_matherrl</I> such that the statement 
+<BR><font face="courier new"> return 0;</font>
+<BR>(which signals an unresolved error) is replaced by the sequence
+<BR><font face="courier new">V_noteError( e-&gt;name, e-&gt;type ); return 1;</font>
+<BR>Thereby the task of printing the error message for unresolved errors is passed to the <i>OptiVec</i> function <I>V_noteError</I> which shall check if an error event file was defined or not and direct its output to the desired place. Keep in mind that it is the return value of <I>_matherr</I> which decides if an error message is printed by the default error handler of your compiler. Thus, after the call to <I>V_noteError</I>, the printing of the default error messages is by-passed by returning &quot;1&quot;. (Also, do not forget that <i>OptiVec</i> / <I>CMATH</I> uses <B>your</B> <I>_matherr</I> routine to determine which errors you accept and which not!)
+<P>For example, your <I>_matherr</I> function (<I>matherr</I> - without the leading underbar - for Borland C++ 3.0 and 3.1) might look like the following one:<font face="courier new">
+<BR>#include &lt;math.h&gt;
+<BR>int _matherr( struct exception *e) /* &quot;_exception&quot; for MSVC */
+<BR>{
+<BR>&nbsp;&nbsp;if( (e-&gt;type == UNDERFLOW) || (e-&gt;type == TLOSS) ) ; /* ignore */
+<BR>&nbsp;&nbsp;else /* all other errors deserve at least notice */
+<BR>&nbsp;&nbsp;{
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;V_noteError( e-&gt;name, e-&gt;type );
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;if (e-&gt;type == DOMAIN) exit(1); /* really fatal */
+<BR>&nbsp;&nbsp;}
+<BR>&nbsp;&nbsp;return 1;
+<BR>}</font>
+<BR>(Of course, if you decide to change <I>_matherr</I>, do not forget to change <I>_matherrl</I> in the same way, if you are using Borland C++!).
+
+<BR><P ALIGN="RIGHT"><A HREF="#TOC">Zurück zum Inhaltsverzeichnis</A></P>
+
+<P><A NAME="chap4"></A>
+<P><HR WIDTH="100%"><H1>4. Syntax Reference</H1>
+Except for the data-type conversion functions, only the <B>float / fComplex / fPolar</B> syntax is given. The syntax of the functions for double and extended precisions is exactly analogous.
+<BR>If you chose the &quot;classic&quot; <B>class complex</B>, this is also similar. Just replace &quot;<B>float</B>&quot; by &quot;<B>double</B>&quot; and &quot;<B>fComplex</B>&quot; by &quot;<B>complex</B>&quot;. No polar functions are available in the &quot;classic&quot; class complex, neither do any of the type-casting operators and interconversion functions exist, if there is only one type.
+
+<BR><P ALIGN="RIGHT"><A HREF="#TOC">Zurück zum Inhaltsverzeichnis</A></P>
+<P><a name="chap4_1"></a>
+<H2>4.1 Plain-C, Pascal/Delphi Functions</H2>
+For the functions of <B>double / dComplex / dPolar</B> and <B>extended / eComplex / ePolar</B> precision, the prefixes are <I>cd_, pd_, ce_</I>, and <I>pe_</I>, respectively.<font face="courier new">
+<P><a name="cfabs">float cf_abs( fComplex __z );</a>
+<BR>function cf_abs( zx:fComplex ): Single;
+<P><a name="pfabs">float pf_abs( fPolar __p );</a>
+<BR>function pf_abs( px:fPolar ): Single;
+<P><a name="cfacos">fComplex cf_acos( fComplex __z );</a>
+<BR>procedure cf_acos( var zy:fComplex; zx:fComplex );
+<P><a name="cfadd">fComplex cf_add( fComplex __x, fComplex __y );</a>
+<BR>procedure cf_add( var zz:fComplex; zx, zy:fComplex );
+<P><a name="cfaddRe">fComplex cf_addRe( fComplex __x, float __yRe );</a>
+<BR>procedure cf_addRe( var zz:fComplex; zx:fComplex; yRe:Single );
+<P><a name="cfarg">float cf_arg( fComplex __z );</a>
+<BR>function cf_arg( zx:fComplex ): Single;
+<P><a name="pfarg">float pf_arg( fPolar __z );</a>
+<BR>function pf_arg( px:fPolar ): Single;
+<P><a name="cfasin">fComplex cf_asin( fComplex __z );</a>
+<BR>procedure cf_asin( var zy:fComplex; zx:fComplex );
+<P><a name="cfatan">fComplex cf_atan( fComplex __z );</a>
+<BR>procedure cf_atan( var zy:fComplex; zx:fComplex );
+<P><a name="cdtoce">eComplex cdtoce( dComplex __zd );</a>
+<BR>procedure cdtoce( var zy:eComplex; zx:dComplex );
+<P><a name="cdtocf">fComplex cdtocf( dComplex __zd );</a>
+<BR>procedure cdtocf( var zy:fComplex; zx:dComplex );
+<P><a name="cdtopd">dPolar cdtopd( dComplex __zd );</a>
+<BR>procedure cdtopd( var py:dPolar; zx:eComplex );
+<P><a name="cdtope">ePolar cdtope( dComplex __zd );</a>
+<BR>procedure cdtope( var py:ePolar; zx:eComplex );
+<P><a name="cdtopf">fPolar cdtopf( dComplex __zd );</a>
+<BR>procedure cdtope( var py:fPolar; zx:eComplex );
+<P><a name="cetocd">dComplex cetocd( eComplex __ze );</a>
+<BR>procedure cetocd( var zy:dComplex; zx:eComplex );
+<P><a name="cetocf">fComplex cetocf( eComplex __ze );</a>
+<BR>procedure cetocf( var zy:fComplex; zx:eComplex );
+<P><a name="cetopd">dPolar cetopd( eComplex __ze );</a>
+<BR>procedure cetopd( var py:dPolar; zx:eComplex );
+<P><a name="cetope">ePolar cetope( eComplex __ze );</a>
+<BR>procedure cetope( var py:ePolar; zx:eComplex );
+<P><a name="cetopf">fPolar cetopf( eComplex __ze );</a>
+<BR>procedure cetopf( var py:fPolar; zx:eComplex );
+<P><a name="cftocd">dComplex cftocd( fComplex __zf );</a>
+<BR>procedure cftocd( var zy:dComplex; zx:fComplex );
+<P><a name="cftoce">eComplex cftoce( fComplex __zf );</a>
+<BR>procedure cftoce( var zy:eComplex; zx:fComplex );
+<P><a name="cftopd">dPolar cftopd( fComplex __zf );</a>
+<BR>procedure cftopd( var py:dPolar; zx:fComplex );
+<P><a name="cftope">ePolar cftope( fComplex __zf );</a>
+<BR>procedure cftope( var py:ePolar; zx:fComplex );
+<P><a name="cftopf">fPolar cftopf( fComplex __zf );</a>
+<BR>procedure cftopf( var py:fPolar; zx:fComplex );
+<P><a name="cfconj">fComplex cf_conj( fComplex __z );</a>
+<BR>procedure cf_conj( var zy:fComplex; zx:fComplex );
+<P><a name="pfconj">fPolar pf_conj( fPolar __p );</a>
+<BR>procedure pf_conj( var py:fPolar; px:fPolar );
+<P><a name="cfcos">fComplex cf_cos( fComplex __z );</a>
+<BR>procedure cf_cos( var zy:fComplex; zx:fComplex );
+<P><a name="cfcosh">fComplex cf_cosh( fComplex __z );</a>
+<BR>procedure cf_cosh( var zy:fComplex; zx:fComplex );
+<P><a name="cfcubic">fComplex cf_cubic( fComplex __z );</a>
+<BR>procedure cf_cubic( var zy:fComplex; zx:fComplex );
+<P><a name="pfcubic">fPolar pf_cubic( fPolar __p );</a>
+<BR>procedure pf_cubic( var py:fPolar; px:fPolar );
+<P><a name="cfdiv">fComplex cf_div( fComplex __x, fComplex __y );</a>
+<BR>procedure cf_div( var zz:fComplex; zx, zy:fComplex );
+<P><a name="pfdiv">fPolar pf_div( fPolar __x, fPolar __y );</a>
+<BR>procedure pf_div( var pz:fPolar; px, py:fPolar );
+<P><a name="cfdivRe">fComplex cf_divRe( fComplex __x, float __yRe ); /* x / yRe */</a>
+<BR>procedure cf_divRe( var zz:fComplex; zx:fComplex; yRe:Single );
+<P><a name="pfdivRe">fPolar pf_divRe( fPolar __x, float __yRe ); /* x / yRe */</a>
+<BR>procedure pf_divRe( var pz:fPolar; px:fPolar; yRe:Single );
+<P><a name="cfdivrRe">fComplex cf_divrRe( fComplex __x, float __yRe ); /* yRe / x */</a>
+<BR>procedure cf_divrRe( var zz:fComplex; zx:fComplex; yRe:Single );
+<P><a name="pfdivrRe">fPolar pf_divrRe( fPolar __x, float __yRe ); /* yRe / x */</a>
+<BR>procedure pf_divrRe( var pz:fPolar; px:fPolar; yRe:Single );
+<P><a name="cfexp">fComplex cf_exp( fComplex __z );</a>
+<BR>procedure cf_exp( var zy:fComplex; zx:fComplex );
+<P><a name="cfexptop">fPolar cf_exptop( fComplex __z );</a>
+<BR>procedure cf_exptop( var py:fPolar; zx:fComplex );
+<P><a name="fcplx">fComplex fcplx( float __ReVal, float __ImVal);</a>
+<BR>procedure fcplx( var zy:fComplex; xRe, xIm:Single );
+<P><a name="fpolr">fPolar fpolr( float __MagVal, float __ArgVal);</a>
+<BR>procedure fpolr( var py:fPolar; xMag, xArg:Single );
+<P><a name="cfimag">float cf_imag( fComplex __z );</a>
+<BR>function cf_imag( zx:fComplex ): Single;
+<P><a name="pfimag">float pf_imag( fPolar __p );</a>
+<BR>function pf_imag( px:fPolar ): Single;
+<P><a name="cfinv">fComplex cf_inv( fComplex __z );</a>
+<BR>procedure cf_inv( var zy:fComplex; zx:fComplex );
+<P><a name="pfinv">fPolar pf_inv( fPolar __p );</a>
+<BR>procedure pf_inv( var py:fPolar; zx:fComplex );
+<P><a name="cfipow">fComplex cf_ipow( fComplex __z, int __exponent );</a>
+<BR>procedure cf_ipow( var zy:fComplex; zx:fComplex; exponent:Integer );
+<P><a name="pfipow">fPolar pf_ipow( fPolar __p, int __exponent );</a>
+<BR>procedure pf_ipow( var py:fPolar; px:fPolar; exponent:Integer );
+<P><a name="cfln">fComplex cf_ln( fComplex __z );</a>
+<BR>procedure cf_ln( var zy:fComplex; zx:fComplex );
+<P><a name="pflntoc">fComplex pf_lntoc( fPolar __p );</a>
+<BR>procedure pf_lntoc( var zy:fComplex; zx:fPolar );
+<P><a name="cflog">fComplex cf_log( fComplex __z ); </a>
+<BR>procedure cf_log( var zy:fComplex; zx:fComplex );
+<P><a name="pflogtoc">fComplex pf_logtoc( fPolar __p ); </a>
+<BR>procedure pf_logtoc( var zy:fComplex; zx:fPolar );
+<P><a name="cflog2">fComplex cf_log2( fComplex __z );</a>
+<BR>procedure cf_log2( var zy:fComplex; zx:fComplex );
+<P><a name="pflog2toc">fComplex pf_log2toc( fPolar __p );</a>
+<BR>procedure pf_log2toc( var zy:fComplex; zx:fPolar );
+<P><a name="cflog10">fComplex cf_log10( fComplex __z );</a>
+<BR>procedure cf_log10( var zy:fComplex; zx:fComplex );
+<P><a name="pflog10toc">fComplex pf_log10toc( fPolar __p );</a>
+<BR>procedure pf_log10toc( var zy:fComplex; zx:fPolar );
+<P><a name="cfmagargtoc">fComplex cf_magargtoc( float __mag, float __angle );</a>
+<BR>procedure cf_magargtoc( var zy:fComplex; mag, angle:Single );
+<P><a name="cfmul">fComplex cf_mul( fComplex __x, fComplex __y );</a>
+<BR>procedure cf_mul( var zz:fComplex; zx, zy:fComplex );
+<P><a name="pfmul">fPolar pf_mul( fPolar __x, fPolar __y );</a>
+<BR>procedure pf_mul( var zz:fPolar; zx, zy:fPolar );
+<P><a name="cfmulRe">fComplex cf_mulRe( fComplex __x, float __yRe );</a>
+<BR>procedure cf_mulRe( var zz:fComplex; zx:fComplex; yRe:Single );
+<P><a name="pfmulRe">fPolar pf_mulRe( fPolar __x, float __yRe );</a>
+<BR>procedure pf_mulRe( var zz:fPolar; zx:fPolar; yRe:Single );
+<P><a name="cfneg">fComplex cf_neg( fComplex __z );</a>
+<BR>procedure cf_neg( var zy:fComplex; zx:fComplex );
+<P><a name="pfneg">fPolar pf_neg( fPolar __p );</a>
+<BR>procedure pf_neg( var py:fPolar; px:fPolar );
+<P><a name="cfnorm">float cf_norm( fComplex __z );</a>
+<BR>function cf_norm( zx:fComplex ): Single;
+<P><a name="pfnorm">float pf_norm( fPolar __p );</a>
+<BR>function pf_norm( px:fPolar ): Single;
+<P><a name="pdtocd">dComplex pdtocd( dPolar __pd );</a>
+<BR>procedure pdtocd( var zy:dComplex; px:dPolar );
+<P><a name="pdtoce">eComplex pdtoce( dPolar __pd );</a>
+<BR>procedure pdtoce( var zy:eComplex; px:dPolar );
+<P><a name="pdtocf">fComplex pdtocf( dPolar __pd );</a>
+<BR>procedure pdtocf( var zy:fComplex; px:dPolar );
+<P><a name="pdtope">ePolar pdtope( dPolar __pd );</a>
+<BR>procedure pdtope( var zy:ePolar; zx:dPolar );
+<P><a name="pdtopf">fPolar pdtopf( dPolar __pd );</a>
+<BR>procedure pdtopf( var zy:fPolar; zx:dPolar );
+<P><a name="petocd">dComplex petocd( ePolar __pe );</a>
+<BR>procedure petocd( var zy:dComplex; px:ePolar );
+<P><a name="petoce">eComplex petoce( ePolar __pe );</a>
+<BR>procedure petoce( var zy:eComplex; px:ePolar );
+<P><a name="petocf">fComplex petocf( ePolar __pe );</a>
+<BR>procedure petocf( var zy:fComplex; px:ePolar );
+<P><a name="petopd">dPolar petopd( ePolar __pe );</a>
+<BR>procedure petopd( var zy:dPolar; zx:ePolar );
+<P><a name="petopf">fPolar petopf( ePolar __pe );</a>
+<BR>procedure petopf( var zy:fPolar; zx:ePolar );
+<P><a name="pftocd">dComplex pftocd( fPolar __pf );</a>
+<BR>procedure pftocd( var zy:dComplex; px:fPolar );
+<P><a name="pftoce">eComplex pftoce( fPolar __pf );</a>
+<BR>procedure pftoce( var zy:eComplex; px:fPolar );
+<P><a name="pftocf">fComplex pftocf( fPolar __pf );</a>
+<BR>procedure pftocf( var zy:fComplex; px:fPolar );
+<P><a name="pftopd">dPolar pftopd( fPolar __pf );</a>
+<BR>procedure pftopd( var zy:dPolar; zx:fPolar );
+<P><a name="pftope">ePolar pftope( fPolar __pf );</a>
+<BR>procedure pftope( var zy:ePolar; zx:fPolar );
+<P><a name="cfpolar">fComplex cf_polar( float mag, float arg ); /* same as cf_magargtoc */ </a>
+<BR>procedure cf_polar( var zy:fComplex; mag, arg:Single );
+<P><a name="cfpow">fComplex cf_pow( fComplex __base, fComplex __exponent );</a>
+<BR>procedure cf_pow( var zy:fComplex; zx:fComplex; exponent:Integer );
+<P><a name="cfpowReBase">fComplex cf_powReBase( float __base, fComplex __exponent ); </a>
+<BR>procedure cf_powReBase( var zy:fComplex; base:Single; exponent:fComplex );
+<P><a name="cfpowReExpo">fComplex cf_powReExpo( fComplex __base, float __exponent );</a>
+<BR>procedure cf_powReExpo( var zy:fComplex; zx:fComplex; exponent:Single );
+<P><a name="pfpowReExpo">fPolar pf_powReExpo( fPolar __base, float __exponent );</a>
+<BR>procedure pf_powReExpo( var py:fPolar; px:fPolar; exponent:Single );
+<P><a name="cfquartic">fComplex cf_quartic( fComplex __z ); </a>
+<BR>procedure cf_quartic( var zy:fComplex; zx:fComplex );
+<P><a name="pfquartic">fPolar pf_quartic( fPolar __p ); </a>
+<BR>procedure pf_quartic( var py:fPolar; zx:fPolar );
+<P><a name="cfreal">float cf_real( fComplex __z );</a>
+<BR>function cf_real( zx:fComplex ): Single;
+<P><a name="pfreal">float pf_real( fPolar __p );</a>
+<BR>function pf_real( px:fPolar ): Single;
+<P><a name="cfsin">fComplex cf_sin( fComplex __z );</a>
+<BR>procedure cf_sin( var zy:fComplex; zx:fComplex );
+<P><a name="cfsinh">fComplex cf_sinh( fComplex __z );</a>
+<BR>procedure cf_sinh( var zy:fComplex; zx:fComplex );
+<P><a name="cfsquare">fComplex cf_square( fComplex __z );</a>
+<BR>procedure cf_square( var zy:fComplex; zx:fComplex );
+<P><a name="pfsquare">fPolar pf_square( fPolar __p );</a>
+<BR>procedure pf_square( var py:fPolar; zx:fPolar );
+<P><a name="cfsqrt">fComplex cf_sqrt( fComplex __z );</a>
+<BR>procedure cf_sqrt( var zy:fComplex; zx:fComplex );
+<P><a name="pfsqrt">fPolar pf_sqrt( fPolar __p );</a>
+<BR>procedure pf_sqrt( var py:fPolar; px:fPolar );
+<P><a name="cfsub">fComplex cf_sub( fComplex __x, fComplex __y );</a>
+<BR>procedure cf_sub( var zz:fComplex; zx, zy:fComplex );
+<P><a name="cfsubRe">fComplex cf_subRe( fComplex __x, float __yRe ); /* x - yRe */</a>
+<BR>procedure cf_subRe( var zz:fComplex; zx:fComplex; yRe:Single );
+<P><a name="cfsubrRe">fComplex cf_subrRe( fComplex __x, float __yRe ); /* yRe - x */</a>
+<BR>procedure cf_subrRe( var zz:fComplex; zx:fComplex; yRe:Single );
+<P><a name="cftan">fComplex cf_tan( fComplex __z );</a>
+<BR>procedure cf_tan( var zy:fComplex; zx:fComplex );
+<P><a name="cftanh">fComplex cf_tanh( fComplex __z );</a>
+<BR>procedure cf_tanh( var zy:fComplex; zx:fComplex );
+</font>
+
+<P ALIGN="RIGHT"><A HREF="#TOC">Back to Table of Contents</A></P>
+<P><a name="chap4_2"></a>
+<H2>4.2 Overloaded C++ Functions</H2>
+<font face="courier new">
+<a name="abs">float abs( fComplex _z );</a>
+<BR><a name="pabs">float abs( fPolar _p );</a>
+<P><a name="acos">fComplex acos( fComplex _z );</a>
+<P><a name="arg">float arg( fComplex _z );</a>
+<BR><a name="parg">float arg( fPolar _p );</a>
+<P><a name="asin">fComplex asin( fComplex _z );</a>
+<P><a name="atan">fComplex atan( fComplex _z );</a>
+<P><a name="conj">fComplex conj( fComplex _z );</a>
+<BR><a name="pconj">fPolar conj( fPolar _p );</a>
+<P><a name="cos">fComplex cos( fComplex _z );</a>
+<P><a name="cosh">fComplex cosh( fComplex _z );</a>
+<P><a name="cubic">fComplex cubic( fComplex _z ); </a>
+<BR><a name="pcubic">fPolar cubic( fPolar _p ); </a>
+<P><a name="exp">fComplex exp( fComplex _z );</a>
+<BR><a name="exptop">fPolar exptop( fComplex _z );</a>
+<P><a name="fComplex">fComplex fComplex( float Re_part, float Im_part=0 );</a>
+<BR>fComplex fComplex( dComplex cd );
+<BR>fComplex fComplex( eComplex ce ); // type-casting constructors
+<BR>fComplex fComplex( fPolar pf ); // interconversion from polar
+<BR>fComplex fComplex( dPolar pd ); 
+<BR>fComplex fComplex( ePolar pe ); 
+<P><a name="imag">float imag(); // to be used as zim = z.imag();</a>
+<BR>float imag( fComplex _z ); // to be used as zim = imag( z );
+<P><a name="pimag">float imag( fPolar _p );</a>
+<BR><a name="inv">fComplex inv( fComplex _z ); </a>
+<BR><a name="pinv">fPolar inv( fPolar _p ); </a>
+<P><a name="ipow">fComplex ipow( fComplex __base, int __expon ); </a>
+<BR><a name="pipow">fPolar ipow( fPolar __base, int __expon ); </a>
+<P><a name="ln">fComplex ln( fComplex _z );</a>
+<BR><a name="lntoc">fComplex lntoc( fPolar _p );</a>
+<P><a name="log">fComplex log( fComplex _z ); </a>
+<BR><a name="logtoc">fComplex logtoc( fPolar _p );</a>
+<P><a name="log2">fComplex log2( fComplex _z );</a>
+<BR><a name="log2toc">fComplex log2toc( fPolar _p );</a>
+<P><a name="log10">fComplex log10( fComplex _z );</a>
+<BR><a name="log10toc">fComplex log10toc( fPolar _p );</a>
+<P><a name="magargtoc">fComplex magargtoc( float _mag, float _angle );</a>
+<P><a name="neg">fComplex neg( fComplex _z );</a>
+<BR><a name="pneg">fPolar neg( fPolar _p );</a>
+<P><a name="norm">float norm( fComplex _z );</a>
+<BR><a name="pnorm">float norm( fPolar _p );</a>
+<P><a name="pow">fComplex pow( fComplex __base, fComplex __expon);</a>
+<BR><a name="powReBase">fComplex powReBase( float __base, fComplex __expon );</a>
+<BR>fComplex pow( float __base, fComplex __expon);
+<BR><a name="powReExpo">fComplex powReExpo( fComplex __base, float __expon );</a>
+<BR>fComplex pow( fComplex __base, float __expon );
+<BR><a name="ppowReExpo">fPolar powReExpo( fPolar __base, float __expon );</a>
+<P><a name="principal">fPolar principal( fPolar _p );</a>
+<BR>fPolar principal( floag __mag, float __arg );
+<P><a name="quartic">fComplex quartic( fComplex _z ); </a>
+<BR><a name="pquartic">fPolar quartic( fPolar _p ); </a>
+<P><a name="real">float z.real(); // to be used as zre = z.real();</a>
+<BR>float real( fComplex _z ); // to be used as zre = real ( _z );
+<BR><a name="preal">float real( fPolar _p );</a>
+<P><a name="reimtop">fPolar reimtop( float _re, float _im );</a>
+<P><a name="sin">fComplex sin( fComplex _z );</a>
+<P><a name="sinh">fComplex sinh( fComplex _z );</a>
+<P><a name="sqrt">fComplex sqrt( fComplex _z );</a>
+<BR><a name="psqrt">fPolar sqrt( fPolar _p );</a>
+<P><a name="square">fComplex square( fComplex _z );</a>
+<BR><a name="psquare">fPolar square( fPolar _z );</a>
+<P><a name="tan">fComplex tan( fComplex _z );</a>
+<P><a name="tanh">fComplex tanh( fComplex _z );</a>
+</font>
+<BR><P ALIGN="RIGHT"><A HREF="#TOC">Zurück zum Inhaltsverzeichnis</A></P>
+
+<P><H1><HR width="100%">E N D </H1>
+Copyright for <i>OptiVec</i> and <I>CMATH</I> software and documentation
+<BR>&copy; 1996-2002 <I>OptiCode</I> - Dr. Martin Sander Software Dev.
+<BR>All rights reserved!
+</body>
+</html>
