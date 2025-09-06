@@ -1,9 +1,12 @@
-      ���������������������������������������������������������������Ŀ
-      �                                                               �
-      �                     OptiVec for C/C++                         �
-      �                                                               �
-      �                    Registered Version 3                       �
-      �����������������������������������������������������������������
+QalibServer repository is using OptiVec library for the analysis functions.
+
+
+      ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+      ³                                                               ³
+      ³                     OptiVec for C/C++                         ³
+      ³                                                               ³
+      ³                    Registered Version 3                       ³
+      ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 Contents:
      1. Introduction
